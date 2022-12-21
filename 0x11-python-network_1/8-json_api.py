@@ -1,20 +1,23 @@
 #!/usr/bin/python3
-"""Sends POST request to url with the letter as a parameter"""
+"""A script tha:
+- takes in a letter
+- sends POST request to http://0.0.0.0:5000/search_user
+with the letter as a parameter.
+"""
+import sys
 import requests
-from sys import argv
+
+
 if __name__ == "__main__":
-    if len(argv) < 2:
-        param = ""
-    else:
-        param = argv[1]
-    letter_param = {"q": param}
-    page = requests.post("http://0.0.0.0:5000/search_user", letter_param)
+    letter = "" if len(sys.argv) == 1 else sys.argv[1]
+    payload = {"q": letter}
+
+    r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
     try:
-        page_to_json = page.json()
-        if len(page_to_json) == 0:
+        response = r.json()
+        if response == {}:
             print("No result")
         else:
-            print("[{}] {}".format(page_to_json.get('id'),
-                                   page_to_json.get('name')))
+            print("[{}] {}".format(response.get("id"), response.get("name")))
     except ValueError:
         print("Not a valid JSON")
