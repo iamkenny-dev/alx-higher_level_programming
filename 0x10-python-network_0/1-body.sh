@@ -1,3 +1,3 @@
 #!/bin/bash
-# Displays only body of a 200 status code response
-curl -sL "$1"
+# sends GET req to URL and display response body
+curl -sfL "$1" -X GET
